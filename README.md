@@ -4,7 +4,7 @@
 
 #### PRs won't be accepted. This is simply a way of having the code available for use elsewhere by me, and you if you find it useful as is.
 
-`POST http://addr:7777/` \
+`POST http://$addr:7777/` \
 data:
 ```json
 {
