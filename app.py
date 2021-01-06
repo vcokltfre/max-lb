@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import HTTPException
 from pydantic import BaseModel
 from aiohttp import ClientSession
+from hmac import compare_digest
 from os import environ as env
 
 
@@ -16,7 +17,7 @@ urls = [f"http://max{i+1}:5000/model/predict" for i in range(4)]
 async def get_prediction(data: Data, request: Request):
     if not "X-Api-Token" in request.headers:
         raise HTTPException(403, "You are not authorized to use this endpoint.")
-    if request.headers["X-Api-Token"] != env.get("token"):
+    if not compare_digest(request.headers["X-Api-Token"], env.get("token")):
         raise HTTPException(403, "You are not authorized to use this endpoint.")
 
     url = urls.pop(0)
